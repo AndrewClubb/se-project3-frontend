@@ -1,22 +1,19 @@
 import http from "../http-common";
 class CourseDataService {
   getAll() {
-    return http.get("/course-t2");
+    return http.get("/schedule-t2/course");
   }
   get(id) {
-    return http.get(`/course-t2/id/${id}`);
+    return http.get(`/schedule-t2/course/${id}`);
   }
   create(data) {
-    return http.post("/course-t2", data);
+    return http.post("/schedule-t2", data);
   }
   update(id, data) {
-    return http.put(`/course-t2/${id}`, data);
+    return http.put(`/schedule-t2/course/${id}`, data);
   }
   delete(id) {
-    return http.delete(`/course-t2/${id}`);
-  }
-  deleteAll() {
-    return http.delete(`/course-t2`);
+    return http.delete(`/schedule-t2/${id}`);
   }
 }
 export default new CourseDataService();

@@ -3,10 +3,17 @@
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by name"
-          v-model="cName" v-on:keyup.enter="searchBy()"/>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by name"
+          v-model="cName"
+          v-on:keyup.enter="searchBy()"
+        />
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
             @click="searchBy()"
           >
             Search
@@ -17,7 +24,8 @@
     <div class="col-md-6">
       <h4>Course List</h4>
       <ul class="list-group">
-        <li class="list-group-item"
+        <li
+          class="list-group-item"
           :class="{ active: index == currentIndex }"
           v-for="(course, index) in filteredCourses"
           :key="index"
@@ -26,37 +34,36 @@
           {{ course.name }}
         </li>
       </ul>
-      <!-- <button class="m-3 btn btn-sm btn-danger" @click="removeAllCourses">
-        Remove All
-      </button> -->
     </div>
     <div class="col-md-6">
       <div v-if="currentCourse">
         <h4>Course</h4>
         <div>
-          <label><strong>Department:</strong></label> {{ currentCourse.dept }}
-        </div>
-        <div>
-          <label><strong>Course Number:</strong></label> {{ currentCourse.courseNumber }}
-        </div>
-        <div>
-          <label><strong>Level:</strong></label> {{ currentCourse.level }}
-        </div>
-        <div>
-          <label><strong>Hours:</strong></label> {{ currentCourse.hours }}
+          <label><strong>Course Number:</strong></label>
+          {{ currentCourse.courseNumber }}
         </div>
         <div>
           <label><strong>Name:</strong></label> {{ currentCourse.name }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentCourse.description }}
+          <label><strong>Description:</strong></label>
+          {{ currentCourse.description }}
         </div>
-        <button class="m-3 btn btn-sm btn-danger" type="button"
+        <div>
+          <label><strong>Hours:</strong></label> {{ currentCourse.hours }}
+        </div>
+        <div>
+          <label><strong>Level:</strong></label> {{ currentCourse.level }}
+        </div>
+        <button
+          class="m-3 btn btn-sm btn-danger"
+          type="button"
           @click="deleteCourse()"
         >
           Delete
         </button>
-        <a class="m-3 btn btn-sm btn-danger"
+        <a
+          class="m-3 btn btn-sm btn-danger"
           :href="'/courses/' + currentCourse.id"
         >
           Edit
@@ -79,18 +86,18 @@ export default {
       filteredCourses: [],
       currentCourse: null,
       currentIndex: -1,
-      cName: ""
+      cName: "",
     };
   },
   methods: {
     retrieveCourses() {
       CourseDataService.getAll()
-        .then(response => {
+        .then((response) => {
           this.courses = response.data;
-          this.filteredCourses = this.courses
+          this.filteredCourses = this.courses;
           console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -105,32 +112,37 @@ export default {
     },
     removeAllCourses() {
       CourseDataService.deleteAll()
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
     searchBy() {
-      this.filteredCourses = this.courses.filter(course => course.name.includes(this.cName) || course.dept.includes(this.cName) || course.courseNumber.includes(this.cName))
+      this.filteredCourses = this.courses.filter(
+        (course) =>
+          course.name.includes(this.cName) ||
+          course.dept.includes(this.cName) ||
+          course.courseNumber.includes(this.cName)
+      );
     },
     deleteCourse() {
-        CourseDataService.delete(this.currentCourse.id)
-          .then(response => {
-            console.log(response.data);
-            this.currentCourse = null;
-            this.retrieveCourses();
-          })
-          .catch(e => {
-            console.log(e);
-          });
+      CourseDataService.delete(this.currentCourse.id)
+        .then((response) => {
+          console.log(response.data);
+          this.currentCourse = null;
+          this.retrieveCourses();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
   mounted() {
     this.retrieveCourses();
-  }
+  },
 };
 </script>
 <style>
