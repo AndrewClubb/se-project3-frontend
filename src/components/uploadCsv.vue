@@ -1,0 +1,21 @@
+<html>
+    <head>
+     
+      <title>Node js upload csv file to MySQL database - Tutsmake.com</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    </head>
+    
+    <body>
+      <h1>Node js upload csv file to MySQL database - Tutsmake.com</h1>
+      <form>
+      <form action="/uploadfile" enctype="multipart/form-data" method="post">
+      
+        <input type="file" name="uploadfile" accept='csv' >
+        <input type="submit" value="Upload CSV">
+     
+      </form>  
+    </body>
+    
+</html>
