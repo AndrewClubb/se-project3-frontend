@@ -21,7 +21,7 @@
           :headers="headers"
           :search="search"
           :items="courses"
-          :items-per-page="50"
+          :items-per-page="5"
           @click:row="rowClick"
         >
         </v-data-table>
