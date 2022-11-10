@@ -61,7 +61,9 @@ app.post('/uploadfile', upload.single("uploadfile"), (req, res) =>{
 });
  
 function UploadCsvDataToMySQL(filePath){
-    let stream = fs.createReadStream(filePath);
+ 
+ 
+    let stream = fs.createReadStream(se-project3-backend/resources/static/assets/uploads);
     let csvData = [];
     let csvStream = csv
         .parse()
@@ -86,7 +88,7 @@ function UploadCsvDataToMySQL(filePath){
              
             // delete file after saving to MySQL database
             // -> you can comment the statement to see the uploaded CSV file.
-            fs.unlinkSync(filePath)
+            fs.unlinkSync(se-project3-backend/resources/static/assets/uploads)
         });
   
     stream.pipe(csvStream);
