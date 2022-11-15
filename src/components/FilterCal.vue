@@ -9,7 +9,7 @@
                 <option value="pumpernickel">Pumpernickel</option>
                 <option value="reeses">Reeses</option>
                 </select>
-
+                
                 <th v-on:click="sortBy('filter')">Apply</th> 
                 
                 
