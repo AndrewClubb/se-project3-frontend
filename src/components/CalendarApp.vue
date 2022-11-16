@@ -40,7 +40,7 @@
                     :color="selectedEvent.color"
                     dark
                   >
-                    <v-btn icon :href="'/courses/' + selectedEvent.courseId">
+                    <v-btn icon :href="'/section/' + selectedEvent.sectionTimeId">
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                     <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -270,6 +270,7 @@
                     faculty: "Faculty: " + faculty,
                     room: "Room: " + room,
                     courseId: courseId,
+                    sectionTimeId: sectionTime.id
                   }
 
                   // temporary filtering
