@@ -1,4 +1,4 @@
-import http from "./services";
+import http from "./services.js";
 class CourseDataService {
   getAll() {
     return http.get("/schedule-t2/course");

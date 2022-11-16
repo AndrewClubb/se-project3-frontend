@@ -1,27 +1,22 @@
 <template>
-
   <v-app>
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <router-link to="/" class="navbar-brand">T2</router-link>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/courses" class="nav-link">Courses</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/add" class="nav-link">Add</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/calendar" class="nav-link">Calendar</router-link>
-        </li>
-      </div>
-    </nav>
+    <MenuBar></MenuBar>
     <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
+
 <script>
+import MenuBar from "@/components/MenuBar.vue";
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    MenuBar,
+  },
+  data() {
+    return {};
+  },
+  methods: {},
 };
 </script>

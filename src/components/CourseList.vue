@@ -1,6 +1,81 @@
 <!-- Basically tutorialsList -->
 <template>
-  <div class="list row">
+  <div>
+    <v-container>
+      <v-toolbar>
+        <v-toolbar-title>Course List</v-toolbar-title>
+      </v-toolbar>
+      <br /><br />
+      <v-card>
+        <v-card-title>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          >
+          </v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="headers"
+          :search="search"
+          :items="courses"
+          :items-per-page="5"
+          @click:row="rowClick"
+        >
+        </v-data-table>
+      </v-card>
+
+      <v-dialog v-model="dialog" max-width="800px">
+        <v-card>
+          <v-card-title>
+            {{ currentCourse.name }}
+          </v-card-title>
+          <v-card-text>
+            <!-- <v-text-field
+              v-model="selectedAppt.startTime"
+              label="Booked Start"
+              dense
+              readonly
+            >
+            </v-text-field>
+            <v-text-field
+              v-model="selectedAppt.endTime"
+              label="Booked End"
+              dense
+              readonly
+            >
+            </v-text-field> -->
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="accent" @click="dialog = true"> Close </v-btn>
+            <!-- <v-btn
+              color="accent"
+              @click="
+                editAppointment();
+                apptDialog = false;
+              "
+            >
+              Save Changes
+            </v-btn>
+            <v-btn
+              color="red"
+              @click="
+                cancelAppointment();
+                apptDialog = false;
+              "
+            >
+              Cancel Appointment
+            </v-btn> -->
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-container>
+  </div>
+
+  <!-- <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by name"
@@ -26,10 +101,10 @@
           {{ course.name }}
         </li>
       </ul>
-      <!-- <button class="m-3 btn btn-sm btn-danger" @click="removeAllCourses">
+      <button class="m-3 btn btn-sm btn-danger" @click="removeAllCourses">
         Remove All
       </button> -->
-    </div>
+  <!-- </div>
     <div class="col-md-6">
       <div v-if="currentCourse">
         <h4>Course</h4>
@@ -67,30 +142,38 @@
         <p>Please click on a Course...</p>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
+
 <script>
 import CourseDataService from "../services/CourseDataService";
 export default {
   name: "course-list",
   data() {
     return {
+      dialog: false,
+      search: "",
       courses: [],
+      headers: [
+        { text: "Name", value: "name" },
+        { text: "Department", value: "dept" },
+        { text: "Course Number", value: "number" },
+      ],
       filteredCourses: [],
-      currentCourse: null,
+      currentCourse: {},
       currentIndex: -1,
-      cName: ""
+      cName: "",
     };
   },
   methods: {
-    retrieveCourses() {
-      CourseDataService.getAll()
-        .then(response => {
+    async retrieveCourses() {
+      await CourseDataService.getAll()
+        .then((response) => {
           this.courses = response.data;
-          this.filteredCourses = this.courses
-          console.log(response.data);
+          this.filteredCourses = this.courses;
+          console.log(this.courses);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -105,32 +188,42 @@ export default {
     },
     removeAllCourses() {
       CourseDataService.deleteAll()
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
     searchBy() {
-      this.filteredCourses = this.courses.filter(course => course.name.includes(this.cName) || course.dept.includes(this.cName) || course.courseNumber.includes(this.cName))
+      this.filteredCourses = this.courses.filter(
+        (course) =>
+          course.name.includes(this.cName) ||
+          course.dept.includes(this.cName) ||
+          course.courseNumber.includes(this.cName)
+      );
     },
     deleteCourse() {
-        CourseDataService.delete(this.currentCourse.id)
-          .then(response => {
-            console.log(response.data);
-            this.currentCourse = null;
-            this.retrieveCourses();
-          })
-          .catch(e => {
-            console.log(e);
-          });
+      CourseDataService.delete(this.currentCourse.id)
+        .then((response) => {
+          console.log(response.data);
+          this.currentCourse = null;
+          this.retrieveCourses();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    rowClick: function (item, row) {
+      row.select(true);
+      this.currentCourse = item;
+      this.dialog = true;
     },
   },
-  mounted() {
-    this.retrieveCourses();
-  }
+  async mounted() {
+    await this.retrieveCourses();
+  },
 };
 </script>
 <style>

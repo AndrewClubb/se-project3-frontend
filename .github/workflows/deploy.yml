@@ -9,6 +9,10 @@ on:
 jobs:
   aws-deploy:
     runs-on: ubuntu-latest
+    env:
+      VUE_APP_CLIENT_ID: ${{secrets.VUE_APP_CLIENT_ID}}
+      VUE_APP_API_URL: ${{secrets.VUE_APP_API_URL}}
+      VUE_APP_CLIENT_URL: ${{secrets.VUE_APP_CLIENT_URL}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -16,8 +20,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - run: |
+          touch .env
+          echo VUE_APP_CLIENT_ID="$VUE_APP_CLIENT_ID" >> .env
+          echo VUE_APP_API_URL="$VUE_APP_API_URL" >> .env
+          echo VUE_APP_CLIENT_URL=project3.eaglesoftwareteam.com >> .env
+          echo VUE_APP_SITE_URL=project3.eaglesoftwareteam.com >> .env
+
       - run: npm install
       - run: npm run build
+      - run: npm run bundle
+
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
