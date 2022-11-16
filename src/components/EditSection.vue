@@ -374,42 +374,6 @@ export default {
           console.log(e);
         });
     },
-    // async getFaculty() {
-    //   await FacultyDataService.get()
-    //     .then((response) => {
-    //       this.faculty = response.data;
-
-    //       for (let i = 0; i < this.faculty.length; i++){
-    //         for (let j = 0; j < this.relevantFacultySections.length; j++){
-    //           if (this.faculty[i].facultyId == this.relevantFacultySections[j]){
-    //             this.relevantFaculty.push(this.faculty[i])
-    //           }
-    //         }
-    //       }
-
-    //       // console.log(response.data);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
-    // async getFacultySections() {
-    //   await FacultySectionDataService.get()
-    //     .then((response) => {
-    //       this.facultySections = response.data;
-
-    //       for (let i = 0; i < this.facultySections.length; i++){
-    //         console.out(this.facultySections[i]);
-    //         if (this.facultySections[i].sectionId == this.sectionId){
-    //           this.relevantFacultySections.push(this.facultySections[i]);
-    //         }
-    //       }
-    //       // console.log(response.data);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
     updatePublished(status) {
       var data = {
         id: this.currentSection.id,
@@ -441,6 +405,49 @@ export default {
     updateSection() {
       
       // update the weekdays before trying to put them
+      if (this.selected.includes("Sunday")){
+        this.weekdays[0] = 1;
+      }
+      else if(!this.selected.includes("Sunday")){
+        this.weekdays[0] = 0;
+      }
+      if (this.selected.includes("Monday")){
+        this.weekdays[1] = 1;
+      }
+      else if(!this.selected.includes("Monday")){
+        this.weekdays[1] = 0;
+      }
+      if (this.selected.includes("Tuesday")){
+        this.weekdays[2] = 1;
+      }
+      else if(!this.selected.includes("Tuesday")){
+        this.weekdays[2] = 0;
+      }
+      if (this.selected.includes("Wednesday")){
+        this.weekdays[3] = 1;
+      }
+      else if(!this.selected.includes("Wednesday")){
+        this.weekdays[3] = 0;
+      }
+      if (this.selected.includes("Thursday")){
+        this.weekdays[4] = 1;
+      }
+      else if(!this.selected.includes("Thursday")){
+        this.weekdays[5] = 0;
+      }
+      if (this.selected.includes("Friday")){
+        this.weekdays[5] = 1;
+      }
+      else if(!this.selected.includes("Friday")){
+        this.weekdays[5] = 0;
+      }
+      if (this.selected.includes("Saturday")){
+        this.weekdays[6] = 1;
+      }
+      else if(!this.selected.includes("Saturday")){
+        this.weekdays[6] = 0;
+      }
+
       var data = {
         startTime: this.newStartTime,
         endTime: this.newEndTime,
