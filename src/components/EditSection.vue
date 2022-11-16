@@ -248,7 +248,7 @@
       </div>
 
       <button
-        type="submit"
+        type="button"
         class="m-3 btn btn-sm btn-danger"
         @click="updateSection()"
       >
@@ -440,7 +440,7 @@ export default {
     },
     updateSection() {
       
-      var updatedObject = {
+      var data = {
         startTime: this.newStartTime,
         endTime: this.newEndTime,
         startDate: this.newStartDate,
@@ -456,11 +456,11 @@ export default {
       } 
 
       
-      SectionTimeDataService.update(this.sectionTime.id, updatedObject)
+      SectionTimeDataService.update(this.sectionTime.id, data)
         .then((response) => {
           console.log(response.data);
           // this.retrieveSections();
-
+          this.$router.push({ name: "calendar" });
         })
         .catch((e) => {
           console.log(e);
