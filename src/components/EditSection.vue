@@ -440,6 +440,7 @@ export default {
     },
     updateSection() {
       
+      // update the weekdays before trying to put them
       var data = {
         startTime: this.newStartTime,
         endTime: this.newEndTime,
