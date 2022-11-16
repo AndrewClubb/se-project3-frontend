@@ -1,4 +1,4 @@
-import http from "../services.js";
+import http from "./services.js";
 class RoomDataService {
   getAll() {
     return http.get("/schedule-t2/room");
