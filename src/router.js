@@ -24,6 +24,11 @@ export default new Router({
       path: "/calendar",
       name: "calendar",
       component: () => import("./components/CalendarApp.vue")
+    },
+    {
+      path: "/section/:id",
+      name: "section-details",
+      component: () => import("./components/EditSection.vue")
     }
   ]
 });
