@@ -4,10 +4,11 @@
           <form>
             <label>Select Session: </label>
             <select @change="changeDisplayedSession">
-              <option selected value="First Session">First Session</option>
-              <option value="Second Session">Second Session</option>
+              <option selected value="Term One">Term One</option>
+              <option value="Term Two">Term Two</option>
             </select>
-          </form>  
+          </form>
+          <p>{{today}}</p>  
         </div>
         <v-row>
         <v-col>
@@ -35,47 +36,17 @@
     import CourseDataService from "../services/CourseDataService";
     export default {
       data: () => ({
-        today: '2023-01-08', // placeholder same as first session
+        today: '2023-01-08',
         calEnd: "2023-04-27", // ending date of the last session
-        sessionOne: '2023-01-08', // placeholder first session start
-        sessionTwo: '2023-03-06', // placeholder second session start
-        displayedSession: "First Session",
+        termOne: '2023-01-08', // placeholder first session start
+        termTwo: '2023-03-05', // placeholder second session start
+        displayedTerm: "Term One",
         sections: [],
         sectionTimes: [],
         courses: [],
         selectedEvent: {},
         selectedOpen: false,
-        events: [ // example events 
-          {
-            name: 'Weekly Meeting',
-            start: '2019-01-07 9:00', 
-            // start: {
-            //   date: '2019-01-07',
-            //   time: '09:00',
-            // },
-            end: '2019-01-07 10:00',
-
-          },
-          {
-            name: `Thomas' Birthday`,
-            start: '2019-01-10',
-          },
-          {
-            name: 'Mash Potatoes',
-            start: '2019-01-09 12:30',
-            end: '2019-01-09 15:30',
-          },
-          {
-            name: "Second Weekly Meeting",
-            start: "2019-07-10 12:30",
-            end: "2019-07-10 15:00"
-          },
-          {
-            name: "Some other event",
-            start: "2019-07-07 12:30",
-            end: "2019-07-07 15:00"
-          }
-        ],
+        events: [],
       }),
       mounted () {
         this.$refs.calendar.scrollToTime('08:00')
@@ -85,6 +56,11 @@
         // console.log(this.events)
       },
       methods: {
+        addDays(date, days) {
+          var result = new Date(date);
+          result.setDate(result.getDate() + days);
+          return result;
+        },
         async getSections() {
           await SectionDataService.getAll()
             .then(async response => {
@@ -132,73 +108,90 @@
             if (section.id == sectionTime.sectionId) 
             {
               // find the course name
-
               // suggest that the sections controller has a function to grab sections, include their courses and include their sectionTimes
               let relevantCourse = this.courses.find( course => course.id == section.courseId);
               let name = relevantCourse.name;
-              // console.log(name)
 
-              // create the event object and add it to the list
-              let tempEvent = {
-                name: name,
-                // figure out how to do multiple week days
-                // find a function to get the next X weekday from a date.
-                // have a loop to iterate through the weekdays in sectionTime and make 
-                // and event for each one that is valid
-                start: sectionTime.startDate + " " + sectionTime.startTime,
-                end: sectionTime.startDate + " " + sectionTime.endTime
+              // used for temporary filtering
+              // let courseNumber = relevantCourse.number;
+
+              let activeWeekdays = [];
+              // load up which weekdays have classes for this section
+              if (sectionTime.sunday == 1)
+                activeWeekdays[0] = 1;
+              if (sectionTime.monday == 1)
+                activeWeekdays[1] = 1;
+              if (sectionTime.tuesday == 1)
+                activeWeekdays[2] = 1;
+              if (sectionTime.wednesday == 1)
+                activeWeekdays[3] = 1;
+              if (sectionTime.thursday == 1)
+                activeWeekdays[4] = 1;
+              if (sectionTime.friday == 1)
+                activeWeekdays[5] = 1;
+              if (sectionTime.saturday == 1)
+                activeWeekdays[6] = 1;
+              
+              // the date for the start of the week
+              let currentDay = new Date(sectionTime.startDate);
+              if (currentDay < new Date(this.termOne))
+                currentDay = this.addDays(currentDay, 7);
+              else
+                currentDay;
+              
+              let validBothTerms = false;
+              let termTwoCurrentDay = new Date(this.termTwo);
+              if (new Date(sectionTime.endDate) > new Date(this.termTwo)){
+                validBothTerms = true;
               }
-              // console.log(tempEvent);
-              this.events.push(tempEvent);
 
-              // add a test to see if the section is in both first and second session
-              // add another event if it is, but with the end date
-              // if (sectionTime.)
-            }
-          });
-          // for (let i = 0; i < this.sectionTimes.length; i++){
-          //   if (section.id == this.sectionTimes[i].sectionId)
-          //   {
-          //     // find the course name
+              for (let i = 0; i < activeWeekdays.length; i++){
+                let readableCurrentDay = currentDay.toISOString().slice(0, 10);
+                if (activeWeekdays[i] == 1){
+                  let tempEvent = {
+                    name: name,
+                    // figure out how to do multiple week days
+                    // find a function to get the next X weekday from a date.
+                    // have a loop to iterate through the weekdays in sectionTime and make 
+                    // and event for each one that is valid
+                    start: readableCurrentDay + " " + sectionTime.startTime,
+                    end: readableCurrentDay + " " + sectionTime.endTime
+                  }
 
-          //     // suggest that the sections controller has a function to grab sections, include their courses and include their sectionTimes
-          //     let relevantCourse = this.courses.find( course => course.id == section.courseId);
-          //     let name = relevantCourse.name;
-          //     // console.log(name)
+                  // temporary filtering
+                  // if (courseNumber.includes("NURS"))
+                  this.events.push(tempEvent);
 
-          //     // create the event object and add it to the list
-          //     let sectionTime = this.sectionTimes[i];
-          //     let tempEvent = {
-          //       name: name,
-          //       // figure out how to do multiple week days
-          //       start: sectionTime.startDate + " " + sectionTime.startTime,
-          //       end: sectionTime.startDate + " " + sectionTime.endTime
-          //     }
-          //     // console.log(tempEvent);
-          //     this.events.push(tempEvent);
+                  let termTworReadableCurrentDay = termTwoCurrentDay.toISOString().slice(0, 10)
+                  // if their data hasn't passed, then include courses in both first and second term
+                  if (validBothTerms) {
+                    let tempEvent = {
+                      name: name,
+                      start: termTworReadableCurrentDay + " " + sectionTime.startTime,
+                      end: termTworReadableCurrentDay + " " + sectionTime.endTime
+                    }
+                    
+                    this.events.push(tempEvent);
+                  }
+                }
+                
+                currentDay = this.addDays(currentDay, 1);
+                termTwoCurrentDay = this.addDays(termTwoCurrentDay, 1);
+              }
 
-          //     // add a test to see if the section is in both first and second session
-          //     // add another event if it is, but with the end date
-          //     // if (sectionTime.)
-          //   }  
-          // }
+          }
+        });
         },
-        // createCalEvents() {
-        //   this.sections.forEach(this.createCalEvent);
-        // },
-        // createCalEvent(event) {
-        //   this.events.push({
-        //     name: event.name
-        //   });
-        // },
         changeDisplayedSession() {
-          if (this.displayedSession == "First Session"){
-            this.today = this.sessionTwo;
-            this.displayedSession = "Second Session";
+          if (this.displayedTerm == "Term One"){
+            this.today = this.termTwo;
+            this.displayedTerm = "Term Two";
+            console.log("Term 2");
           }
           else{
-            this.today = this.sessionOne;
-            this.displayedSession = "First Session";
+            this.today = this.termOne;
+            this.displayedTerm = "Term One";
+            console.log("Term 1");
           }
         },
         showEvent (event) {
@@ -207,28 +200,3 @@
       }
     }
 </script>
-
-<style scoped>
-    .my-event {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border-radius: 2px;
-      background-color: #1867c0;
-      color: #ffffff;
-      border: 1px solid #1867c0;
-      font-size: 12px;
-      padding: 3px;
-      cursor: pointer;
-      margin-bottom: 1px;
-      left: 4px;
-      margin-right: 8px;
-      position: relative;
-    }
-    
-    .my-event.with-time {
-      position: absolute;
-      right: 4px;
-      margin-right: 0px;
-    }
-</style>
