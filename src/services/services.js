@@ -5,9 +5,9 @@ import Router from "../router.js";
 
 var baseurl = "";
 if (process.env.NODE_ENV === "development") {
-  baseurl = "http://localhost:3012/project3/2022/t2/";
+  baseurl = "http://localhost:3012/";
 } else {
-  baseurl = "/project3/2022/t2/";
+  baseurl = "/";
 }
 
 const apiClient = axios.create({

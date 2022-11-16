@@ -5,7 +5,7 @@ Vue.use(Router);
 const router = new Router({
   mode: "history",
   // mode: "hash",
-  base: process.env.NODE_ENV === "development" ? "/" : "/",
+  base: process.env.NODE_ENV === "development" ? "/" : "/project3/2022/t2/",
   routes: [
     {
       path: "/",
