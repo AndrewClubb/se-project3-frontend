@@ -456,7 +456,7 @@ export default {
       } 
 
       
-      SectionDataService.update(this.sectionTime.id, updatedObject)
+      SectionTimeDataService.update(this.sectionTime.id, updatedObject)
         .then((response) => {
           console.log(response.data);
           // this.retrieveSections();
