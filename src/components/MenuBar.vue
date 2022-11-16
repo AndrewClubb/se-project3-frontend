@@ -6,33 +6,36 @@
                 <div>{{ this.title }}</div>    
             </v-toolbar-title> -->
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <!-- v-if="user != null"> -->
+      <v-toolbar-items v-if="user != null">
         <v-btn class="white--text" exact :to="{ name: 'calendar' }" text>
           Calendar
         </v-btn>
         <v-btn class="white--text" exact :to="{ name: 'courses' }" text>
           Courses
         </v-btn>
-        <v-btn class="white--text" exact :to="{ name: 'add' }" text>
+        <v-btn
+          v-if="user.admin == 'admin'"
+          class="white--text"
+          exact
+          :to="{ name: 'add' }"
+          text
+        >
           Add Course
         </v-btn>
       </v-toolbar-items>
       <v-menu bottom min-width="200px" rounded offset-y v-if="user != null">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon x-large v-on="on" v-bind="attrs">
-            <v-avatar v-if="user != null" color="secondary">
-              <span class="accent--text font-weight-bold">{{ initials }}</span>
+            <v-avatar v-if="user != null" color="indigo darken-2">
+              <span class="white--text font-weight-bold">{{ initials }}</span>
             </v-avatar>
           </v-btn>
         </template>
         <v-card>
           <v-list-item-content class="justify-center">
             <div class="mx-auto text-center">
-              <v-avatar color="secondary" class="mt-2 mb-2">
-                <span class="accent--text font-weight-bold">{{
-                  initials
-                }}</span>
+              <v-avatar color="indigo darken-2" class="mt-2 mb-2">
+                <span class="white--text font-weight-bold">{{ initials }}</span>
               </v-avatar>
               <h3>{{ name }}</h3>
               <p class="text-caption mt-1">
@@ -97,6 +100,10 @@ export default {
       if (this.user != null) {
         this.initials = this.user.fName[0] + this.user.lName[0];
         this.name = this.user.fName + " " + this.user.lName;
+        if (this.user.role == "faculty") {
+          //this.$router.go();
+          this.$router.push({ name: "calendar" });
+        }
       }
     },
     logout() {
@@ -104,8 +111,8 @@ export default {
         .then((response) => {
           console.log(response);
           Utils.removeItem("user");
-          this.$router.push({ name: "login" });
           this.$router.go();
+          this.$router.push({ name: "login" });
         })
         .catch((error) => {
           console.log("error", error);

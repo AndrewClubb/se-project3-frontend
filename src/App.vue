@@ -2,7 +2,7 @@
   <v-app>
     <MenuBar></MenuBar>
     <v-main>
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </v-main>
   </v-app>
 </template>

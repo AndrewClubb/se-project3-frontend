@@ -1,7 +1,7 @@
 import http from "./services.js";
-class RoomDataService {
+class FacultySectionDataService {
   getAll() {
-    return http.get("/schedule-t2/room");
+    return http.get("/schedule-t2/facultySection");
   }
   // get(id) {
   //   return http.get(`/schedule-t2/id/${id}`);
@@ -19,4 +19,4 @@ class RoomDataService {
   //   return http.delete(`/schedule-t2`);
   // }
 }
-export default new RoomDataService();
+export default new FacultySectionDataService();

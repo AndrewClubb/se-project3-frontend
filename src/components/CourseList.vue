@@ -21,7 +21,7 @@
           :headers="headers"
           :search="search"
           :items="courses"
-          :items-per-page="5"
+          :items-per-page="10"
           @click:row="rowClick"
         >
         </v-data-table>
@@ -32,25 +32,33 @@
           <v-card-title>
             {{ currentCourse.name }}
           </v-card-title>
+          <!-- <v-card-title>
+            {{ currentCourse.number }}
+          </v-card-title>
+          <v-card-title>
+            {{ currentCourse.description }}
+          </v-card-title> -->
           <v-card-text>
-            <!-- <v-text-field
-              v-model="selectedAppt.startTime"
-              label="Booked Start"
+            <br />
+            <v-text-field
+              v-model="currentCourse.number"
+              label="Course Number"
               dense
               readonly
             >
             </v-text-field>
-            <v-text-field
-              v-model="selectedAppt.endTime"
-              label="Booked End"
+            <br />
+            <v-textarea
+              v-model="currentCourse.description"
+              label="Description"
               dense
               readonly
             >
-            </v-text-field> -->
+            </v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="accent" @click="dialog = true"> Close </v-btn>
+            <v-btn color="accent" @click="dialog = false"> Close </v-btn>
             <!-- <v-btn
               color="accent"
               @click="
@@ -156,8 +164,8 @@ export default {
       courses: [],
       headers: [
         { text: "Name", value: "name" },
-        { text: "Department", value: "dept" },
         { text: "Course Number", value: "number" },
+        { text: "Description", value: "description" },
       ],
       filteredCourses: [],
       currentCourse: {},
@@ -195,14 +203,6 @@ export default {
         .catch((e) => {
           console.log(e);
         });
-    },
-    searchBy() {
-      this.filteredCourses = this.courses.filter(
-        (course) =>
-          course.name.includes(this.cName) ||
-          course.dept.includes(this.cName) ||
-          course.courseNumber.includes(this.cName)
-      );
     },
     deleteCourse() {
       CourseDataService.delete(this.currentCourse.id)

@@ -56,12 +56,19 @@ export default {
           Utils.setStore("user", this.user);
           this.fName = this.user.fName;
           this.lName = this.user.lName;
-          this.$router.push({ name: "tutorials" });
-          this.$router.go();
+          this.goToPage();
         })
         .catch((error) => {
           console.log("error", error);
         });
+    },
+    goToPage() {
+      if (this.user.role == "faculty") {
+        //this.$router.go();
+        this.$router.push({ name: "calendar" });
+        this.$router.go();
+      }
+      //this.$router.go();
     },
   },
 };

@@ -7,7 +7,7 @@ class CourseDataService {
     return http.get(`/schedule-t2/course/${id}`);
   }
   create(data) {
-    return http.post("/schedule-t2", data);
+    return http.post("/schedule-t2/course", data);
   }
   update(id, data) {
     return http.put(`/schedule-t2/course/${id}`, data);
@@ -16,7 +16,7 @@ class CourseDataService {
     return http.delete(`/schedule-t2/course/${id}`);
   }
   deleteAll() {
-    return http.delete(`/schedule-t2`);
+    return http.delete(`/schedule-t2/course`);
   }
 }
 export default new CourseDataService();

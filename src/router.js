@@ -1,8 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
 Vue.use(Router);
-export default new Router({
+
+const router = new Router({
   mode: "history",
+  // mode: "hash",
+  base: process.env.NODE_ENV === "development" ? "/" : "/project3/2022/t2/",
   routes: [
     {
       path: "/",
@@ -28,12 +31,19 @@ export default new Router({
     {
       path: "/calendar",
       name: "calendar",
-      component: () => import("./components/CalendarApp.vue")
+      component: () => import("./components/CalendarApp.vue"),
     },
-    {
-      path: "/section/:id",
-      name: "section-details",
-      component: () => import("./components/EditSection.vue")
-    }
-  ]
+  ],
 });
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("user");
+  if (authRequired && !loggedIn) {
+    return next("/");
+  }
+  next();
+});
+
+export default router;

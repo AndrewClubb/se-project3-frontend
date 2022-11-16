@@ -269,6 +269,7 @@ import SectionTimeDataService from "../services/SectionTimeDataService";
 import CourseDataService from "../services/CourseDataService";
 import RoomDataService from "../services/RoomDataService";
 
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "section",

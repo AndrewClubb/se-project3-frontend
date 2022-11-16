@@ -15,8 +15,5 @@ class SessionDataService {
   delete(id) {
     return http.delete(`/schedule-t2/section/${id}`);
   }
-  deleteAll() {
-    return http.delete(`/schedule-t2/section/`);
-  }
 }
 export default new SessionDataService();

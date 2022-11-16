@@ -16,7 +16,7 @@
             type="text"
             class="form-control"
             id="courseNumber"
-            v-model="currentCourse.courseNumber"
+            v-model="currentCourse.number"
             />
         </div>
         <div class="form-group">
