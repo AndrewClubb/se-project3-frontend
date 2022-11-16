@@ -470,7 +470,7 @@ export default {
       SectionDataService.delete(this.currentSection.id)
         .then((response) => {
           console.log(response.data);
-          this.$router.push({ name: "sections" });
+          this.$router.push({ name: "calendar" });
         })
         .catch((e) => {
           console.log(e);
